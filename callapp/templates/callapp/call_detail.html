@@ -1,0 +1,46 @@
+{% extends "callapp/base.html" %}{# Inheriting Parent template #}
+{% block content %}
+
+{# display pagination links #}
+<div class="pagination " style="margin-left: 46%;">
+    <span class="step-links">
+        {% if calls.has_previous %}
+            <a href="?page=1&phone={{number}}">&laquo; first</a>
+            <a href="?page={{ calls.previous_page_number }}&phone={{number}}">previous</a>
+            <br>
+        {% endif %}
+        <span class="current-page">
+            Page {{ calls.number }} of {{ calls.paginator.num_pages }}.
+        </span>
+        <br>
+        {% if calls.has_next %}
+            <a href="?page={{ calls.next_page_number }}&phone={{number}}">&laquo;next</a>
+            <a href="?page={{ calls.paginator.num_pages }}&phone={{number}}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{# Creating table to show call report #}
+<table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">from</th>
+        <th scope="col">to</th>
+        <th scope="col">timing</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for call in calls %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ call.from_number }}</td>
+            <td>{{ call.to_number }}</td>
+            <td>{{ call.calling_time }}</td>
+            <td><a href="{% url 'callapp:delete_call' id=call.id number=number %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

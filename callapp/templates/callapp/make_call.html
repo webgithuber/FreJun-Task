@@ -1,0 +1,50 @@
+{% extends "callapp/base.html" %}{# Inheriting Parent template #}
+{% block content %}
+
+{# Alert message while making call #}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" >
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      {{ message }}
+  </div>
+</div>
+{% endfor %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-4 offset-2">
+            <div class="call-form" style="width: 250px;">
+            <h1>Make A Call</h1>{# Creating form to make call #}
+            <form action="{% url 'callapp:intiate_call' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="mobile1">From Number:</label>
+                    <input type="tel" id="mobile1" name="from" pattern="[0-9]{10}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile2">To Number:</label>
+                    <input type="tel" id="mobile2" name="to" pattern="[0-9]{10}" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            </div>
+        </div>
+        <div class="col-4 offset-1">
+            <div class="report-form" style="width: 290px;">
+                <h1>Get Call Report</h1>{# Creating form to get call details #}
+                <form action="{% url 'callapp:call_report' %}" method="GET">
+                    <div class="form-group">
+                        <label for="phone">Mobile Number:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
